@@ -12,7 +12,7 @@ interface SpecSubscription {
 }
 
 interface SpecObservable<T> {
-  subscribe: (observer: SpecObserver<T, any>) => SpecSubscription;
+  subscribe: (observer: SpecObserver<T, unknown>) => SpecSubscription;
 }
 
 export function fromSpecObservable<T = unknown>(

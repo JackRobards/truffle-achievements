@@ -1,12 +1,12 @@
 import './App.css';
+import { useEffect, useState } from 'react';
 import {
-  user as userClient,
   getSrcByImageObj,
   org as orgClient,
+  user as userClient,
 } from '@trufflehq/sdk';
 import { observer } from '@legendapp/state/react';
 import { fromSpecObservable } from './from-spec-observable';
-import { useEffect, useState } from 'react';
 
 // here we're creating observables using the legend state library
 // https://legendapp.com/open-source/state/
