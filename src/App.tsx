@@ -1,11 +1,12 @@
 import './App.css';
-import { useEffect, useState } from 'react';
 import {
   getSrcByImageObj,
   org as orgClient,
   user as userClient,
 } from '@trufflehq/sdk';
 import { observer } from '@legendapp/state/react';
+import { initThinBackend } from 'thin-backend';
+import { ThinBackend } from 'thin-backend-react';
 import { fromSpecObservable } from './from-spec-observable';
 
 // here we're creating observables using the legend state library
@@ -14,35 +15,25 @@ const user = fromSpecObservable(userClient.observable);
 const orgUser = fromSpecObservable(userClient.orgUser.observable);
 const org = fromSpecObservable(orgClient.observable);
 
+// This needs to be run before any calls to `query`, `createRecord`, etc.
+initThinBackend({
+  // This url is different for each backend, you can find the backend url in the project documentation
+  host: 'https://truffle-achievements.thinbackend.app',
+});
+
 function App() {
-  // `.observable` is actually a spec compliant observable
-  // https://github.com/tc39/proposal-observable
-  // you can interact with it directly if you want, but we prefer to use legend :p
-  const [orgId, setOrgId] = useState<string | undefined>(undefined);
-  // this is how you use spec compliant observables without legend
-  useEffect(() => {
-    const subscription = orgClient.observable.subscribe({
-      next: (org) => {
-        setOrgId(org.id);
-      },
-      error: (error) => {
-        console.error(error);
-      },
-      complete: () => void null,
-    });
-
-    return () => subscription.unsubscribe();
-  });
-
   return (
-    <div className="App">
-      {/* when using a legend state observable, you can use the `.get()` method to get the current value */}
-      {/* the cool thing is that it will automatically update on any changes */}
-      <div>Org: {org.name.get()}</div>
-      <div>Org ID: {orgId}</div>
-      <h2>Welcome, {orgUser.name.get()}</h2>
-      <img src={getSrcByImageObj(user.avatarImage.get(), { size: 'small' })} />
-    </div>
+    <ThinBackend requireLogin>
+      <div className="App h-8 w-8">
+        <div>Org: {org.name.get()}</div>
+        <div>Org ID: {org.id.get()}</div>
+        <h2>Welcome, {orgUser.name.get()}</h2>
+        <p>{user.name.get()}</p>
+        <img
+          src={getSrcByImageObj(user.avatarImage.get(), { size: 'small' })}
+        />
+      </div>
+    </ThinBackend>
   );
 }
 
