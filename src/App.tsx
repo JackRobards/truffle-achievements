@@ -81,7 +81,7 @@ function App() {
               {isMenuOpen ? (
                 <>
                   <Subheader />
-                  <div className="overflow-y-auto">
+                  <div className="h-[420px] overflow-y-auto">
                     <h2 className="mt-3 text-3xl font-extrabold">
                       Your Achievements
                     </h2>
