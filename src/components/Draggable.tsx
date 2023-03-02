@@ -1,6 +1,8 @@
-//Author: Shane Cranor
-//https://github.com/trufflehq/truffle-packages/tree/truffle-sdk-draggable/npm/sdk/examples/react-draggable
-// Fixed up a few TypeScript issues, so the file is slightly different
+/**
+ * Taken from @link https://github.com/trufflehq/truffle-packages/tree/truffle-sdk-draggable/npm/sdk/examples/react-draggable
+ * Fixed up a few TypeScript issues, so the file is slightly different
+ * Also changed the sizing/styling slightly
+ */
 
 import React from 'react';
 import { useEffect, useState } from 'react';
@@ -28,6 +30,7 @@ export interface Modifiers {
 export interface Dimensions {
   base: Vector;
   modifiers: Modifiers;
+  size?: { width: number; height: number };
 }
 
 function createIframeStyle(
@@ -48,8 +51,8 @@ function createIframeStyle(
   //creates an element that spans the entire screen
   //a clip path is used to crop to only the actual component
   const style: React.CSSProperties = {
-    width: '100%',
-    height: '100%',
+    width: dimensions.size?.width ?? '100%',
+    height: dimensions.size?.height ?? '100%',
     clipPath: createClipPath(
       dragInfo.current,
       dimensions.base,
@@ -58,10 +61,8 @@ function createIframeStyle(
     transition: dimensions.modifiers.transition,
     cursor: dragInfo.pressed ? 'grab' : 'auto',
     background: 'none',
-    position: 'fixed',
-    top: '0',
-    left: '0',
     zIndex: '999',
+    pointerEvents: 'all',
   };
   //remove clip path if mouse is pressed or if the user is currently moused down on a non draggable item
   // this gives us mouse events across the entire page so we don't lose a mouse up event
@@ -75,12 +76,14 @@ export default function Draggable({
   defaultPosition,
   requiredClassName,
   ignoreClassName,
+  className = '',
 }: {
   children: React.ReactNode;
   dimensions: Dimensions;
   defaultPosition: Vector;
   requiredClassName?: string; //elements must have this classname to be used to drag
   ignoreClassName?: string; //elements with this classname cannot be used to drag
+  className?: string;
 }) {
   const [dragInfo, setDragInfo] = useState<DragInfo>({
     current: defaultPosition,
@@ -116,7 +119,7 @@ export default function Draggable({
   return (
     //outer div is the full screen div that is cropped with clip path
     <div
-      className="draggable"
+      className={`draggable ${className}`}
       draggable={true}
       style={createIframeStyle(dimensions, dragInfo)}
       onMouseDown={(e) => {

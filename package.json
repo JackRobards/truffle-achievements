@@ -33,7 +33,7 @@
   "devDependencies": {
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
-    "@types/thin-backend": "https://thin.dev/types/6e70efeb-4df6-4377-8ca7-6c1179c85f1d/kissvoXWTwTSVwFJGsuCMNDGSLSklWps",
+    "@types/thin-backend": "https://thin.dev/types/3e11d824-ff6d-46dd-87fc-d184e7f6538a/LjTdYCFMKczfmtzRKYoUStFDZSRcORXy",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
     "@vitejs/plugin-react": "^3.0.0",
